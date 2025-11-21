@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Caméra Basler</title>
+</head>
+<body>
+
+    <img id="camera-image" src="{{ image_path }}?t={{ timestamp }}" alt="Photo Capturée" style="width: 120vh;">
+
+
+    <script>
+        // Connexion au flux Server-Sent Events
+        const eventSource = new EventSource('/stream');
+        const imageElement = document.getElementById('camera-image');
+
+        eventSource.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            // Mettre à jour l'image avec un timestamp pour éviter le cache
+            imageElement.src = data.image + '?t=' + data.timestamp;
+            console.log('Nouvelle image chargée:', data.image);
+        };
+
+        eventSource.onerror = function(error) {
+            console.error('Erreur SSE:', error);
+        };
+    </script>
+</body>
+</html>
