@@ -2,48 +2,40 @@
 
 ## Description
 
-Ce script Python permet de détecter et de lister les caméras Basler connectées à votre système.
+Application web Flask pour capturer et visualiser des images depuis une caméra Basler en temps réel.
 
 ## Fonctionnalités
 
-### `info.py`
-Script de détection des caméras Basler qui :
-- Énumère toutes les caméras Basler connectées au système
-- Affiche le nombre total de caméras détectées
-- Pour chaque caméra trouvée, affiche :
-  - Le numéro de la caméra
-  - Le modèle de la caméra
-  - Le numéro de série
+- Connexion automatique à la première caméra Basler détectée
+- Capture d'images en continu avec intervalle configurable (3 secondes par défaut)
+- Interface web pour visualiser les images capturées en temps réel
+- Sauvegarde automatique des images dans le dossier `src/images/`
+- Stream d'événements pour mise à jour automatique de l'interface
 
 ## Dépendances
 
-- **pypylon** : Bibliothèque Python pour l'interaction avec les caméras Basler
+- **pypylon** : Interaction avec les caméras Basler
+- **flask** : Serveur web
+- **opencv-python (cv2)** : Traitement d'images
+
+## Structure
+
+```
+src/
+├── app.py          # Application Flask principale
+├── basler.html     # Interface web
+├── style.css       # Styles
+└── images/         # Images capturées
+```
 
 ## Utilisation
 
 ```bash
-python src/info.py
+python src/app.py
 ```
 
-## Exemples de sortie
-
-### Aucune caméra détectée
-```
-Aucune caméra Basler détectée
-```
-
-### Une ou plusieurs caméras détectées
-```
-2 caméra(s) Basler détectée(s)
-   Caméra 1: acA1300-60gm - S/N: 12345678
-   Caméra 2: acA2040-90um - S/N: 87654321
-```
-
-### En cas d'erreur
-```
-Erreur : [message d'erreur]
-```
+Accédez ensuite à l'interface web sur `http://localhost:5000`
 
 ## Gestion des erreurs
 
-Le script inclut une gestion d'erreurs qui capture et affiche toute exception qui pourrait survenir lors de la détection des caméras.
+Le script inclut une gestion robuste des erreurs avec système de tentatives de connexion et logs détaillés.
